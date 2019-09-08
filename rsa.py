@@ -1,4 +1,5 @@
 from math import sqrt
+import random
 def is_prime(n: int) -> bool:
 
     if n == 1:
@@ -45,6 +46,24 @@ def generate_keypair(p: int, q: int):
         g = gcd(e, phi)
     d = multiplicative_inverse(e, phi)
     return ((e, n), (d, n))
+def encrypt(pk, plaintext):
+    key, n = pk
+    cipher = [(ord(char) ** key) % n for char in plaintext]
+    return cipher
 
+def decrypt(pk, ciphertext):
+    #Unpack the key into its components
+    key, n = pk
+    #Generate the plaintext based on the ciphertext and key using a^b mod m
+    plain = [chr((char ** key) % n) for char in ciphertext]
+    #Return the array of bytes as a string
+    return ''.join(plain)
 if __name__=="__main__":
-    print(multiplicative_inverse(7, 40))
+    p = int(input("Enter a prime number: "))
+    q = int(input("Enter ANOTHER prime number: "))
+    public, private = generate_keypair(p, q)
+    print ("Your public key is ", public ," and your private key is ", private)
+    message = input("Enter a message to encrypt with your private key: ")
+    encrypted_msg = encrypt(private, message)
+    print (encrypted_msg)
+    print (decrypt(public, encrypted_msg))
