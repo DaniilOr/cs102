@@ -1,7 +1,14 @@
 from math import sqrt
 import random
 def is_prime(n: int) -> bool:
-
+    """
+    >>> is_prime(2)
+    True
+    >>> is_prime(11)
+    True
+    >>> is_prime(8)
+    False
+    """
     if n == 1:
         return False
     for i in range(2,int(sqrt(n))+1):
@@ -9,6 +16,13 @@ def is_prime(n: int) -> bool:
             return False
     return True
 def gcd(a: int, b: int) -> int:
+    """
+    >>> gcd(12, 15)
+    3
+    >>> gcd(3, 7)
+    1
+    """
+    # PUT YOUR CODE HERE
     while(a and b):
         if a>b:
             a%=b
@@ -25,6 +39,10 @@ def extended_gcd(a: int, b:int):
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
+    """
+    >>> multiplicative_inverse(7, 40)
+    23
+    """
     g, x, y = extended_gcd(e, phi)
     return x % phi
 
