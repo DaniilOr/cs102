@@ -1,6 +1,6 @@
 def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     ciphertext=''
-    new_key = keyword * ((len(plaintext)//len(keyword)) + int(len(plaintext)//len(keyword)==0))
+    new_key = keyword * ((len(plaintext)//len(keyword)) + int(len(plaintext)//len(keyword)==0)+(len(plaintext)%len(keyword)))
     for i in range(len(plaintext)):
         char = plaintext[i]
         code = ord(new_key[i])
@@ -20,7 +20,9 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
 
 def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     plaintext=''
-    new_key = keyword * ((len(ciphertext)//len(keyword)) + int(len(ciphertext)//len(keyword)==0))
+    new_key = keyword * ((len(ciphertext)//len(keyword)) + int(len(ciphertext)//len(keyword)==0)+(len(ciphertext)%len(keyword)) )
+    #print(len(new_key))
+    #print(len(ciphertext))
     for i in range(len(ciphertext)):
         char = ciphertext[i]
         code = ord(new_key[i])
@@ -38,4 +40,5 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
         plaintext+=chr(code)
     return plaintext
 if __name__=='__main__':
-    print(decrypt_vigenere("LXFOPVEFRNHR", "LEMONLEMONLE"))
+    print(encrypt_vigenere('python', 'gone'))
+    print(decrypt_vigenere(encrypt_vigenere('python', 'gone'), "gone"))
