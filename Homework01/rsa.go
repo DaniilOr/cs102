@@ -6,6 +6,7 @@ import "math/rand"
 import "math/big"
 import "errors"
 import "fmt"
+import "os"
 
 type Key struct {
     key int
@@ -125,7 +126,10 @@ func main(){
   fmt.Print("Enter another number: ")
   fmt.Scan(&p)
   //var pk KeyPair
-  pk, _:= GenerateKeypair(p,q)
+  pk, err := GenerateKeypair(p,q)
+    if err != nil {
+        os.Exit(404)
+    }
   var text string
   fmt.Scan(&text)
   var encrypted []int
