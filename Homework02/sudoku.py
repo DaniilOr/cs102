@@ -1,6 +1,8 @@
 import random
 from typing import Tuple, List, Set, Optional
 import copy
+
+
 def read_sudoku(filename: str) -> List[List[str]]:
     """ Прочитать Судоку из указанного файла """
     with open(filename) as f:
@@ -8,6 +10,8 @@ def read_sudoku(filename: str) -> List[List[str]]:
     digits = [c for c in content if c in '123456789.']
     grid = group(digits, 9)
     return grid
+
+
 def display(grid: List[List[str]]) -> None:
     """Вывод Судоку """
     width = 2
@@ -17,6 +21,8 @@ def display(grid: List[List[str]]) -> None:
         if str(row) in '25':
             print(line)
     print()
+
+
 def group(values: List[str], n: int) -> List[List[str]]:
     """
     Сгруппировать значения values в список, состоящий из списков по n элементов
@@ -28,10 +34,10 @@ def group(values: List[str], n: int) -> List[List[str]]:
     """
 
     ans = []
-    subgroup=[]
-    for i in range(1,len(values)+1):
-        subgroup.append(values[i-1])
-        if i%n == 0:
+    subgroup = []
+    for i in range(1, len(values) + 1):
+        subgroup.append(values[i - 1])
+        if i % n == 0:
             ans.append(subgroup)
             subgroup = []
     if not subgroup == []:
@@ -39,6 +45,7 @@ def group(values: List[str], n: int) -> List[List[str]]:
 
     return ans
 # PUT YOUR CODE HERE
+
 
 def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
 
@@ -81,6 +88,8 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     br = int(row / 3) * 3
     bc = int(col / 3) * 3
     return [grid[br+r][bc+c] for r in range(3) for c in range(3)]
+
+
 def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     """ Найти первую свободную позицию в пазле
 
@@ -98,6 +107,8 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
             if grid[row][col] == '.':
                 return (row, col)
     return (-42, -42)
+
+
 def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str]:
     """ Вернуть множество всех возможных значения для указанной позиции
     >>> grid = read_sudoku('puzzle1.txt')
@@ -116,11 +127,9 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
             used_values.update(value)
     used_values.update(get_row(grid, (row, col)))
     used_values.update(get_col(grid, (row, col)))
-    #print(used_values)
-    return [value for value in '123456789' if not value in used_values]
+    return [value for value in '123456789' if value not in used_values]
 
 
-    pass
 def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     """ Решение пазла, заданного в grid
     Как решать Судzоку?
@@ -135,20 +144,19 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
     (row, col) = find_empty_positions(grid)
-    if( (row, col) == (-42,-42)):
+    if((row, col) == (-42, -42)):
         return grid
 
     values = find_possible_values(grid, (row, col))
     for value in values:
         grid[row][col] = value
         solved = solve(grid)
-        if solved:
+        if not solved == [['-1']]:
             return solved
-
     grid[row][col] = '.'
-
-
     return None
+
+
 def check_solution(solution: List[List[str]]) -> bool:
     for row in range(len(solution)):
         row_values = set(get_row(solution, (row, 0)))
@@ -167,6 +175,7 @@ def check_solution(solution: List[List[str]]) -> bool:
                 return False
 
     return True
+
 
 def generate_sudoku(N: int) -> List[List[str]]:
     """ Генерация судоку заполненного на N элементов
@@ -189,16 +198,16 @@ def generate_sudoku(N: int) -> List[List[str]]:
     >>> check_solution(solution)
     True
     """
-    new_grid =  solve([['.'] * 9 for _ in range(9)])
+    new_grid = solve([['.'] * 9 for _ in range(9)])
     N = 81 - min(81, max(0, N))
     while N != 0:
         row = random.randint(0, 8)
         col = random.randint(0, 8)
         if new_grid[row][col] != '.':
             new_grid[row][col] = '.'
-            N-=1
+            N -= 1
     return new_grid
-if __name__=='__main__':
+if __name__ == '__main__':
     grid = read_sudoku('puzzle1.txt')
     display(solve(grid))
 
