@@ -26,8 +26,7 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    # PUT YOUR CODE HERE
-    while(a and b):
+    while a and b:
         if a > b:
             a %= b
         else:
@@ -80,6 +79,8 @@ def decrypt(pk, ciphertext):
     key, n = pk
     plain = [chr((char ** key) % n) for char in ciphertext]
     return ''.join(plain)
+
+
 if __name__ == "__main__":
     p = int(input("Enter a prime number: "))
     q = int(input("Enter ANOTHER prime number: "))
