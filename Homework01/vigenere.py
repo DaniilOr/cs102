@@ -64,6 +64,8 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
 
         plaintext += chr(code)
     return plaintext
+
+
 if __name__ == '__main__':
     print(encrypt_vigenere('python', 'gone'))
     print(decrypt_vigenere(encrypt_vigenere('python', 'gone'), "gone"))
