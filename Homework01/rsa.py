@@ -76,17 +76,25 @@ def encrypt(pk, plaintext):
 
 
 def decrypt(pk, ciphertext):
+    # Unpack the key into its components
     key, n = pk
+    # Generate the plaintext based on the ciphertext and key using a^b mod m
     plain = [chr((char ** key) % n) for char in ciphertext]
+    # Return the array of bytes as a string
     return ''.join(plain)
 
 
-if __name__ == "__main__":
-    p = int(input("Enter a prime number: "))
-    q = int(input("Enter ANOTHER prime number: "))
+if __name__ == '__main__':
+    print("RSA Encrypter/ Decrypter")
+    p = int(input("Enter a prime number (17, 19, 23, etc): "))
+    q = int(input("Enter another prime number (Not one you entered above): "))
+    print("Generating your public/private keypairs now . . .")
     public, private = generate_keypair(p, q)
-    print ("Your public key is ", public, " and your private key is ", private)
+    print("Your public key is ", public, " and your private key is ", private)
     message = input("Enter a message to encrypt with your private key: ")
     encrypted_msg = encrypt(private, message)
-    print (encrypted_msg)
-    print (decrypt(public, encrypted_msg))
+    print("Your encrypted message is: ")
+    print(''.join(map(lambda x: str(x), encrypted_msg)))
+    print("Decrypting message with public key ", public, " . . .")
+    print("Your message is:")
+    print(decrypt(public, encrypted_msg))
