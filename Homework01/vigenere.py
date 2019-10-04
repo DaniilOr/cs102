@@ -13,21 +13,13 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     for i in range(len(plaintext)):
         char = plaintext[i]
         code = ord(new_key[i])
-        if char.isalpha() and chr(code).islower():
-            code = ord(new_key[i]) - ord('a')
+        shift = ord('A') if char.isupper() else ord('a')
+        if char.isalpha():
+            code = ord(new_key[i]) - shift
             code = code + ord(char)
-            code -= ord('a') * int(char.islower())
-            code -= ord('A')*int(char.isupper())
+            code -= shift
             code %= 26
-            code = code + ord('a') * int(char.islower())
-            code += ord('A') * int(char.isupper())
-        if char.isalpha() and chr(code).isupper():
-            code = ord(new_key[i]) - ord('A')
-            code = code + ord(char) - ord('a') * int(char.islower())
-            code -= ord('A') * int(char.isupper())
-            code %= 26
-            code = code + ord('a') * int(char.islower())
-            code += ord('A') * int(char.isupper())
+            code = code + shift
         ciphertext += chr(code)
     return ciphertext
 
@@ -47,21 +39,12 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     for i in range(len(ciphertext)):
         char = ciphertext[i]
         code = ord(new_key[i])
-        if char.isalpha() and chr(code).islower():
-            code = ord(new_key[i]) - ord('a')
-            code = ord(char) - code - ord('a') * int(char.islower())
-            code -= ord('A') * int(char.isupper())
+        shift = ord('A') if char.isupper() else ord('a')
+        if char.isalpha():
+            code = ord(new_key[i]) - shift
+            code = ord(char) - code - shift
             code %= 26
-            code = code + ord('a') * int(char.islower())
-            code += ord('A') * int(char.isupper())
-        if char.isalpha() and chr(code).isupper():
-            code = ord(new_key[i]) - ord('A')
-            code = ord(char) - code - ord('a') * int(char.islower())
-            code -= ord('A') * int(char.isupper())
-            code %= 26
-            code = code + ord('a') * int(char.islower())
-            code += ord('A') * int(char.isupper())
-
+            code = code + shift
         plaintext += chr(code)
     return plaintext
 
