@@ -1,6 +1,5 @@
 import random
 from typing import Tuple, List, Set, Optional
-import copy
 
 
 def read_sudoku(filename: str) -> List[List[str]]:
@@ -44,7 +43,6 @@ def group(values: List[str], n: int) -> List[List[str]]:
         ans.append(subgroup)
 
     return ans
-# PUT YOUR CODE HERE
 
 
 def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -85,9 +83,9 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
     row, col = pos
-    br = int(row / 3) * 3
-    bc = int(col / 3) * 3
-    return [grid[br+r][bc+c] for r in range(3) for c in range(3)]
+    b_row = int(row / 3) * 3
+    b_col = int(col / 3) * 3
+    return [grid[b_row+row][b_col+col] for row in range(3) for col in range(3)]
 
 
 def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
@@ -151,29 +149,29 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     for value in values:
         grid[row][col] = value
         solved = solve(grid)
-        if not solved == [['-1']]:
+        if solved:
             return solved
+
     grid[row][col] = '.'
     return None
 
 
 def check_solution(solution: List[List[str]]) -> bool:
     for row in range(len(solution)):
-        row_values = set(get_row(solution, (row, 0)))
-        if row_values != set('123456789'):
+        values = set(get_row(solution, (row, 0)))
+        if values != set('123456789'):
             return False
 
     for col in range(len(solution)):
-        col_values = set(get_col(solution, (0, col)))
-        if col_values != set('123456789'):
+        values = set(get_col(solution, (0, col)))
+        if values != set('123456789'):
             return False
 
     for row in (0, 3, 6):
         for col in (0, 3, 6):
-            blk_values = set(get_block(solution, (row, col)))
-            if blk_values != set('123456789'):
+            values = set(get_block(solution, (row, col)))
+            if values != set('123456789'):
                 return False
-
     return True
 
 
@@ -200,15 +198,22 @@ def generate_sudoku(N: int) -> List[List[str]]:
     """
     new_grid = solve([['.'] * 9 for _ in range(9)])
     N = 81 - min(81, max(0, N))
-    while N != 0:
+    while N > 0:
         row = random.randint(0, 8)
         col = random.randint(0, 8)
         if new_grid[row][col] != '.':
             new_grid[row][col] = '.'
             N -= 1
     return new_grid
+
+
+def run_solve(fname):
+    grid = read_sudoku(fname)
+    start = time.time()
+    solve(grid)
+    end = time.time()
+
+
 if __name__ == '__main__':
     grid = read_sudoku('puzzle1.txt')
     display(solve(grid))
-
-    # PUT YOUR CODE HERE
