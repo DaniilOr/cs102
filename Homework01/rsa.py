@@ -31,7 +31,7 @@ def gcd(a: int, b: int) -> int:
             a %= b
         else:
             b %= a
-    return a | b
+    return a if a > 0 else b
 
 
 def extended_gcd(a: int, b: int):
