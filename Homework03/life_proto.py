@@ -87,7 +87,7 @@ class GameOfLife:
         for i in range(self.cell_height):
             sub_array = []
             for j in range(self.cell_width):
-                sub_array.append(1 * randomize * random.randint(0, 1024) % 2)
+                sub_array.append(randomize * (random.randint(0, 1)))
             self.grid.append(sub_array)
         return self.grid
 
@@ -156,9 +156,10 @@ class GameOfLife:
                 else:
                     new_grid[i][j] = 0
         self.grid = copy.deepcopy(new_grid)
+        return self.grid
 
 
 if __name__ == '__main__':
-    from pprint import pprint as pp
+    #from cpprint import pprint as pp
     game = GameOfLife(320, 240, 40)
     game.run()
