@@ -29,8 +29,6 @@ class GameOfLife:
         # Скорость протекания игры
         self.speed = speed
 
-
-
     def draw_lines(self) -> None:
         """ Отрисовать сетку """
         for x in range(0, self.width, self.cell_size):
@@ -40,14 +38,12 @@ class GameOfLife:
             pygame.draw.line(self.screen, pygame.Color('black'),
                     (0, y), (self.width, y))
 
-
     def run(self) -> None:
         """ Запустить игру """
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
-
         # Создание списка клеток
         # PUT YOUR CODE HERE
         self.create_grid(True)
@@ -57,7 +53,6 @@ class GameOfLife:
                 if event.type == QUIT:
                     running = False
             self.draw_lines()
-
             # Отрисовка списка клеток
             # Выполнение одного шага игры (обновление состояния ячеек)
             # PUT YOUR CODE HERE
@@ -66,7 +61,6 @@ class GameOfLife:
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
-
 
     def create_grid(self, randomize: bool=False) -> Grid:
         """
@@ -91,18 +85,19 @@ class GameOfLife:
             self.grid.append(sub_array)
         return self.grid
 
-
     def draw_grid(self) -> None:
         """
         Отрисовка списка клеток с закрашиванием их в соответствующе цвета.
         """
+        csz = self.cell_size
         for i in range(0, self.height, self.cell_size):
             for j in range(0, self.width, self.cell_size):
-                c1 = i // self.cell_size
-                c2 = j // self.cell_size
-                pygame.draw.rect(self.screen, pygame.Color('black') if self.grid[c1][c2] else pygame.Color('white'), (j, i, self.cell_size, self.cell_size) )
+                c1 = i // csz
+                c2 = j // csz
 
-
+                pygame.draw.rect(self.screen, pygame.Color('black')
+                                 if self.grid[c1][c2] else pygame.Color('white'),
+                                 (j, i, csz, csz))
 
     def get_neighbours(self, cell: Cell) -> Cells:
         """
@@ -123,7 +118,7 @@ class GameOfLife:
         cells = []
         g = copy.deepcopy(self.grid)
         coordinates = set([(x, y)])
-        x = x -1
+        x = x - 1
         y = y - 1
         for i in range(0, 3):
             for j in range(0, 3):
@@ -135,7 +130,6 @@ class GameOfLife:
             if not (item[0] == x + 1 and item[1] == y + 1):
                 cells.append(g[item[0]][item[1]])
         return cells
-
 
     def get_next_generation(self) -> Grid:
         """
@@ -158,8 +152,6 @@ class GameOfLife:
         self.grid = copy.deepcopy(new_grid)
         return self.grid
 
-
 if __name__ == '__main__':
-    #from cpprint import pprint as pp
     game = GameOfLife(320, 240, 40)
     game.run()
