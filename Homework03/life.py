@@ -36,7 +36,7 @@ class GameOfLife:
         cells = []
         g = copy.deepcopy(self.curr_generation)
         coordinates = set([(x, y)])
-        x = x -1
+        x = x - 1
         y = y - 1
         for i in range(0, 3):
             for j in range(0, 3):
@@ -62,7 +62,6 @@ class GameOfLife:
                     new_grid[i][j] = 0
         self.n_generation += 1
         return new_grid
-
 
     def step(self) -> None:
         """
@@ -106,8 +105,6 @@ class GameOfLife:
         f.close()
         return game
 
-
-
     def save(self, filename: pathlib.Path) -> None:
         """
         Сохранить текущее состояние клеток в указанный файл.
@@ -117,9 +114,3 @@ class GameOfLife:
             for item in s:
                 f.write(str(item).replace("'", ''))
             f.write('\n')
-
-if __name__ == '__main__':
-    life = GameOfLife.from_file('4')
-    #life.save(pathlib.Path('glider-4-steps.txt'))
-    life.save('41')
-    print(life.curr_generation)
