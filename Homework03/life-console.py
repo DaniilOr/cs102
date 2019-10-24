@@ -19,7 +19,7 @@ class Console(UI):
         for i in range(0, self.life.rows):
             for j in range(0, self.life.cols):
 
-                screen.addstr(int(dims[0])//2-1 + j, int(dims[1])//2-1 + i, '*'
+                screen.addstr(j+1, i+1, '*'
                                  if self.life.curr_generation[i][j] else
                                  ' ')
 
@@ -41,5 +41,5 @@ class Console(UI):
         curses.endwin()
 if __name__ == '__main__':
     os.system('clear')
-    gui = Console(GameOfLife((10,10), True, 50))
+    gui = Console(GameOfLife((30,20), True, 50))
     gui.run()
