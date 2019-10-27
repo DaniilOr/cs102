@@ -57,7 +57,7 @@ class GameOfLife:
             # Выполнение одного шага игры (обновление состояния ячеек)
             # PUT YOUR CODE HERE
             self.draw_grid()
-            self.get_next_generation()
+            self.grid = copy.deepcopy(self.get_next_generation())
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
@@ -149,8 +149,7 @@ class GameOfLife:
                     new_grid[i][j] = 1
                 else:
                     new_grid[i][j] = 0
-        self.grid = copy.deepcopy(new_grid)
-        return self.grid
+        return new_grid
 
 if __name__ == '__main__':
     game = GameOfLife(320, 240, 40)
