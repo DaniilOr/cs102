@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 func B2i(b bool) int {
@@ -153,8 +154,9 @@ func (g *GameOfLife) write(filename string) {
 	f.Close()
 }
 func main() {
+	rand.Seed(time.Now().UTC().UnixNano())
 	game := new(GameOfLife)
-	game.Init(8, 24, true, 50)
+	game.Init(8, 8, true, 4000)
 	var state bool
 	state = false
 	for state != true {
