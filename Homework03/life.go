@@ -88,6 +88,7 @@ func (g *GameOfLife) get_next_generation() [][]rune {
 		for j := range g.current_generation[i] {
 			var cells []rune
 			var counter int
+			counter = 0
 			cells = g.get_neighbours(i, j)
 			for k := range cells {
 				if cells[k] == '1' {
