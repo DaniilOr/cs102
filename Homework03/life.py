@@ -75,7 +75,10 @@ class GameOfLife:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        return self.n_generation >= self.max_generations
+        if self.max_generations is not None:
+            return self.n_generation >= self.max_generations  #type ignore
+        else:
+            return False
 
     @property
     def is_changing(self) -> bool:
@@ -89,9 +92,8 @@ class GameOfLife:
         """
         Прочитать состояние клеток из указанного файла.
         """
-        f = open(filename, 'r')
         grid = []
-        strings = f.read().split('\n')
+        strings = filename.read_text().split('\n')
         rows = len(strings)
         cols = len(strings[0])
         strings = strings[:-1]
@@ -102,15 +104,13 @@ class GameOfLife:
             grid.append(sub_array)
         game = GameOfLife((rows, cols), False)
         game.curr_generation = copy.deepcopy(grid)
-        f.close()
         return game
 
     def save(self, filename: pathlib.Path) -> None:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        f = open(filename, 'w')
         for s in self.curr_generation:
             for item in s:
-                f.write(str(item).replace("'", ''))
-            f.write('\n')
+                filename.write_text(str(item).replace("'", ''))
+            filename.write_text('\n')
