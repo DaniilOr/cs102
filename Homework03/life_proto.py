@@ -33,10 +33,10 @@ class GameOfLife:
         """ Отрисовать сетку """
         for x in range(0, self.width, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color('black'),
-                    (x, 0), (x, self.height))
+                             (x, 0), (x, self.height))
         for y in range(0, self.height, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color('black'),
-                    (0, y), (self.width, y))
+                             (0, y), (self.width, y))
 
     def run(self) -> None:
         """ Запустить игру """
@@ -96,7 +96,8 @@ class GameOfLife:
                 c2 = j // csz
 
                 pygame.draw.rect(self.screen, pygame.Color('black')
-                                 if self.grid[c1][c2] else pygame.Color('white'),
+                                 if self.grid[c1][c2]
+                                 else pygame.Color('white'),
                                  (j, i, csz, csz))
 
     def get_neighbours(self, cell: Cell) -> Cells:
