@@ -6,7 +6,6 @@ from pandas.io.json import json_normalize
 from string import Template
 
 
-
 def get_wall(
     owner_id: str='',
     domain: str='',
