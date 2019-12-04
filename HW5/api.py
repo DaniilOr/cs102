@@ -7,6 +7,7 @@ from igraph import Graph, plot
 import numpy as np
 import igraph
 
+
 def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     """ Выполнить GET-запрос
 
@@ -32,6 +33,7 @@ def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
         delay = delay + normalvariate(delay * Jitter)
     return response
 
+
 def get_friends(user_id, fields):
     """ Returns a list of user IDs or detailed information about a user's friends """
     assert isinstance(user_id, int), "user_id must be positive integer"
@@ -41,6 +43,7 @@ def get_friends(user_id, fields):
     query = "{}/friends.get?access_token={}&user_id={}&fields={}&v={}".format(domain, access_token, user_id, fields, v)
     response = get(query, backoff_factor=2,timeout=100).json()
     return response
+
 
 def get_age(born):
     born = born.split('.')
@@ -109,7 +112,6 @@ def get_network(users_ids, as_edgelist=True):
         for row in matrix:
             print(row)
     N = len(vertices)
-
     visual_style = {}
     visual_style["layout"] = g.layout_fruchterman_reingold(
     maxiter=1000,
@@ -122,8 +124,6 @@ def get_network(users_ids, as_edgelist=True):
     pal = igraph.drawing.colors.ClusterColoringPalette(len(clusters))
     g.vs['color'] = pal.get_many(clusters.membership)
     plot(g, **visual_style)
-
-
 
 
 if __name__ == '__main__':
