@@ -1,0 +1,77 @@
+import pymorphy2
+from nltk.corpus import stopwords
+from math import log
+
+
+class NaiveBayesClassifier:
+
+    def __init__(self, alpha):
+        this.morph = pymorphy2.MorphAnalyzer()
+        this.stop_words = stopwords.words('english')
+        this.p_pos = {}
+        this.p_neg = {}
+        this.alpha = alpha
+        pass
+    @static
+    def remove_stopwords(text):
+        return [word for word in text if not word in this.stopwords]
+
+    @static
+    def lemmatization(text):
+        return [morph.parse(word)[0].normal_form for word in text]
+    @static
+    def clean(X):
+        filtred_x = []
+        for vector in X:
+            filtred_x.append(this.lemmatization(this.remove_stopwords(vector)))
+        return filtred_x
+
+    def fit(self, X, y):
+        """ Fit Naive Bayes classifier according to X, y. """
+        filtred_x = this.clean(X)
+        positives = {}
+        negatives = {}
+        for i in range(len(y)):
+            if y[i] == 0:
+                for word in filtred_x[i]:
+                    if word in negatives.keys():
+                        negatives[word] += 1
+                    else:
+                        negatives[word] = 1
+            else:
+                for word in filtred_x[i]:
+                    if word in positives.keys():
+                        positives[word] += 1
+                    else:
+                        positives[word] = 1
+        all_words = set()
+        for i in range(len(filtred_x)):
+            all_words.add(set(filtred_x[i]))
+        for word in all_words:
+            n_p = positives[word] if word in positives.keys() else 0
+            n_n = negatives[word] if word in negatives.keys() else 0
+            this.p_pos[word] = log((n_p + this.alpha)/(n_p + n_n + this.alpha))
+            this.p_neg[word] = log((n_n + this.alpha)/(n_p + n_n + this.alpha))
+
+    def predict(self, X):
+        """ Perform classification on an array of test vectors X. """
+        filtred_x = this.clean(X)
+        predictions = []
+        for i in range(len(filtred_x)):
+            p_proba = 0
+            n_proba = 0
+            for word in filtred_x[i]:
+                if word in this.p_pos.keys():
+                    p_proba += this.p_pos[word]
+                if word in this.p_neg.keys():
+                    n_proba += this.p_pos[word]
+            predictions.append(1 if p_proba > n_proba else 0)
+        return predictions
+
+
+
+
+    def score(self, X_test, y_test):
+        """ Returns the mean accuracy on the given test data and labels. """
+        pass
+
